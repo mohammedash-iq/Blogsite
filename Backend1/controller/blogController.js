@@ -15,26 +15,25 @@ async function createBlog(title, content, user_id) {
 }
 
 //function deletes the blog using the blogid provided and updates the database
-function deleteBlog(blogId) {
+async function deleteBlog(blogId) {
   try {
-    const [row] = dbPool.promise().query({
-      sql: "Delete sql",
-      values: [],
+    const [row] =await dbPool.promise().query({
+      sql: "DELETE FROM Blogs WHERE blog_id=?",
+      values: [blogId],
     });
     return true;
   } catch (err) {
     console.log("Error Deleting the blog", err);
-
     return false;
   }
 }
 
 //function that takes blogid,title ,body aas parameters and updates the blog in the database
-function updateBlog(blogId, title, body) {
+async function updateBlog(blogId, title, content) {
   try {
-    const [row] = dbPool.promise().query({
-      sql: "",
-      values: [blogId, title, body],
+    const [row] = await dbPool.promise().query({
+      sql: "UPDATE Blogs SET title=?,content=? WHERE blog_id=?",
+      values: [ title, content,blogId],
     });
     return true;
   } catch (err) {
