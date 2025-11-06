@@ -7,25 +7,28 @@ const saltRounds = 10;
 async function loginController(email, password) {
   try {
     //check if the user exists
-    const [rows] = await dbPool.promise().query({
-      sql: "SELECT ? FROM Users WHERE email= ?",
-      values: ["email",email]});
-    if (rows.length == 0) {
+    const [row, fields] = await dbPool.promise().query({
+      sql: "SELECT email FROM Users WHERE email= ?",
+      values: [email],
+    });
+    if (row.length === 0) {
       return [false, "User doesn't exist"];
     }
 
     // Retrieve the hashed password from the database
-    const [dbPassword] = await dbPool.promise().query({
-      sql: "SELECT ? FROM Users WHERE email=?",
-      values: ["password_hash",email]});
-    console.log(dbPassword);
+    const passrow = await dbPool.promise().query({
+      sql: "SELECT user_id, password_hash FROM Users WHERE email= ?",
+      values: [email],
+    });
     // Compare the provided password with the hashed password from the database
-    const result = await bcrypt.compare(password, dbPassword[0].password_hash);
+    const result = await bcrypt.compare(password, passrow[0][0].password_hash);
+
     if (result) {
-      return ["accesstoken", "refreshtoken"];
+      return [true, passrow[0][0].user_id];
     }
     return [false, "Incorrect Password"];
   } catch (err) {
+    console.log(err);
     return [false, "Internal Server error"];
   }
 }
@@ -34,19 +37,20 @@ async function loginController(email, password) {
 async function signinController(username, email, password) {
   try {
     // Check for existing user by email or username
-    const [rows] = await dbPool.promise().query({
-      sql: "SELECT ? FROM Users WHERE email=?",
-      values: ["email",email]});
-    console.log(rows);
-    if (rows.length > 0) {
+    const [row] = await dbPool.promise().query({
+      sql: "SELECT email FROM Users WHERE email=?",
+      values: [email],
+    });
+    if (row.length > 0) {
       return [false, "User already exists"];
     }
     // Insert new user into the database
     const hashedPassword = await bcrypt.hash(password, saltRounds);
-    await dbPool.promise().query({
+    const updaterow = await dbPool.promise().query({
       sql: "INSERT INTO Users (email, username, password_hash) VALUES (?,?,?);",
-      values: [email, username, hashedPassword]    });
-    return ["accesstoken", "refreshtoken"];
+      values: [email, username, hashedPassword],
+    });
+    return [true, updaterow[0].user_id];
   } catch (err) {
     console.log(err);
     return [false, "Internal Server Error"];

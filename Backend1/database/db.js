@@ -1,10 +1,9 @@
-import mysql from "mysql2";
+import mysql2 from "mysql2";
 
-var dbPool = mysql.createPool({
+var dbPool = mysql2.createPool({
   connectionLimit: 3,
   host: "localhost",
   user: "root",
-  port: 3306,
   password: "password",
   database: "blogsite",
 });
