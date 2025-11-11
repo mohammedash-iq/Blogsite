@@ -1,4 +1,5 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { Navigate } from "react-router-dom";
 function CreateBlog() {
   const [inputState, setInputState] = useState({ title: "", content: "" });
 
@@ -13,6 +14,7 @@ function CreateBlog() {
   }
   return (
     <div>
+    <p className="text-xl">tools for the blog writtin</p>
       <form className="flex flex-col ">
         <input
           value={inputState.title}

@@ -1,4 +1,5 @@
 import Navbar from "./components/Navbar"
+import RegisterPage from "./pages/RegisterPage"
 import Blogs from "./screens/Blogs"
 import CreateBlog from "./screens/CreateBlog"
 import MyBlogs from "./screens/MyBlogs"
@@ -11,6 +12,7 @@ function App() {
       <Route path="/" element={<Blogs></Blogs>}></Route>
       <Route path="/createblog" element={<CreateBlog></CreateBlog>}></Route>
       <Route path="/myblogs" element={<MyBlogs></MyBlogs>}></Route>
+      <Route path="/register" element={<RegisterPage/>}></Route>
     </Routes>
     
     </>
