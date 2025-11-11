@@ -1,41 +1,7 @@
+import { useEffect } from "react";
+import { blogStore } from "../store/MyblogsStore";
 function Blogs() {
-  const blogList = [
-    {
-      blogId: "101",
-      title: "title 2",
-      content:
-        "lorem2lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem299",
-      created_date: Date.now(),
-    },
-    {
-      blogId: "102",
-      title: "title 2",
-      content:
-        "lorem2lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem299",
-      created_date: Date.now(),
-    },
-    {
-      blogId: "103",
-      title: "title 3",
-      content:
-        "lorem2lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem299",
-      created_date: Date.now(),
-    },
-    {
-      blogId: "104",
-      title: "title 4",
-      content:
-        "lorem2lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem299",
-      created_date: Date.now(),
-    },
-    {
-      blogId: "105",
-      title: "title 5",
-      content:
-        "lorem2lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem29lorem299",
-      created_date: Date.now(),
-    },
-  ];
+  const blogList=blogStore((state)=>state.blogs)
 
   return (
     <div className="overflow-scroll max-w-[1000px]">

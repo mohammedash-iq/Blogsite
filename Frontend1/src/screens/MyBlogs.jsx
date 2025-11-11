@@ -1,27 +1,15 @@
+import { userBlogStore } from "../store/MyblogsStore";
+
 function MyBlogs() {
-  const myBlogs = [
-    {
-      blogId: 121,
-      title: "title1",
-      content:
-        "lorem12lorem12lorem12lorem12lorem12lorem12lorem12lorem12lorem12lorem12lorem12lorem12lorem12",
-      created_date: Date.now(),
-    },
-    {
-      blogId: 123,
-      title: "title2",
-      content:
-        "lorem12lorem12lorem12lorem12lorem12lorem12lorem12lorem12lorem12lorem12lorem12lorem12lorem12lorem12lorem12lorem12lorem12lorem12lorem12lorem12lorem12lorem12lorem12lorem12lorem12lorem12lorem12lorem12lorem12lorem12lorem12lorem12lorem12lorem12lorem12lorem12lorem12lorem12lorem12lorem12",
-      created_date: Date.now(),
-    },
-  ];
+
+  const myBlogs=userBlogStore((state)=>state.userBlogs)
   function handleDeleteBlog(e) {
     //give a confromation screen and delete the blog from the database and the local state
     console.log(e.target.value);
   }
   function handleEditBlog(e) {
     //give a conformation screen and go to edit blog page with the blog details
-    console.log(e.target.value);
+    console.log(e.target.value);    
   }
   return (
     <div>
