@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { loginService, signInService } from "../services/registerService";
 
 function RegisterPage() {
   const [registerState, setRegisterState] = useState("signin");
@@ -7,15 +8,26 @@ function RegisterPage() {
     email: "",
     password: "",
   });
-  function handleRegisterForm(e) {
-    if(registerState==="signin"){
-        //validation and api endpoint handeled here
-        console.log(inputState.username,inputState.email,inputState.password)
-    }
-    else if(registerState==="login"){
-        //validation and api enpoint handeled here
-        console.log(inputState.email,inputState.password)
 
+  async function handleRegisterForm(e) {
+    e.preventDefault();
+    if (registerState === "login") {
+      const res = await loginService({
+        email: inputState.email,
+        password: inputState.password,
+      });
+      if (!res.result) {
+        alert(res.message);
+      }
+    } else {
+      const res = await signInService({
+        username: inputState.username,
+        email: inputState.email,
+        password: inputState.password,
+      });
+      if (!res.result) {
+        alert(res.message)
+      }
     }
     e.preventDefault();
   }
@@ -44,7 +56,7 @@ function RegisterPage() {
           Login In
         </button>
       </div>
-      <form onSubmit={handleRegisterForm}>
+      <form onSubmit={handleRegisterForm} method="post">
         {registerState === "signin" ? (
           <>
             <label htmlFor="username">Username</label>
