@@ -1,42 +1,36 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { loginService, signInService } from "../services/registerService";
+import useToken from "../store/authStore"
 
 function RegisterPage() {
   const [registerState, setRegisterState] = useState("signin");
-  const [inputState, setInputState] = useState({
-    username: "",
-    email: "",
-    password: "",
-  });
+  const [inputState, setInputState] = useState({ username: "", email: "", password: "" });
+  const setToken = useToken((state) => state.setToken)
 
   async function handleRegisterForm(e) {
     e.preventDefault();
     if (registerState === "login") {
-      const res = await loginService({
-        email: inputState.email,
-        password: inputState.password,
-      });
+      const res = await loginService({ email: inputState.email, password: inputState.password });
       if (!res.result) {
         alert(res.message);
+        return
       }
-    } else {
-      const res = await signInService({
-        username: inputState.username,
-        email: inputState.email,
-        password: inputState.password,
-      });
+      alert("Logged in successfully")
+      setToken(res.token)
+    }
+    else {
+      const res = await signInService({ username: inputState.username, email: inputState.email, password: inputState.password });
       if (!res.result) {
-        alert(res.message)
+        alert(res.message);
+        return
       }
+      alert("Logged in Successfully")
+      setToken(res.token)
     }
     e.preventDefault();
   }
   function RegisterButtonHandeler(e) {
-    if (e.target.id === "signin") {
-      setRegisterState("signin");
-    } else {
-      setRegisterState("login");
-    }
+    e.target.id === "signin" ? setRegisterState("signin") : setRegisterState("login");
   }
   return (
     <>
@@ -45,16 +39,12 @@ function RegisterPage() {
           id="signin"
           className={registerState === "signin" ? "bg-gray-100" : "bg-blue-400"}
           onClick={RegisterButtonHandeler}
-        >
-          Sign In
-        </button>
+        >Sign In</button>
         <button
           id="login"
           className={registerState === "login" ? "bg-gray-100" : "bg-blue-400"}
           onClick={RegisterButtonHandeler}
-        >
-          Login In
-        </button>
+        > Login In</button>
       </div>
       <form onSubmit={handleRegisterForm} method="post">
         {registerState === "signin" ? (
