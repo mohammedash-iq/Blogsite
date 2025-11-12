@@ -1,60 +1,47 @@
 import express from "express";
-import {
-  loginController,
-  signinController,
-} from "../controller/userAuthController.js";
-import {checkJwtToken,jwtTokenGenerator} from "../controller/jwtController.js";
+import { loginController, signinController } from "../controller/userAuthController.js";
+import { checkJwtToken, jwtTokenGenerator } from "../controller/jwtController.js";
 
 const authRouter = express.Router();
 
 authRouter.post("/login", async (req, res) => {
   const { email, password } = req.body;
   if (!email | !password) {
-    res
-      .status(400)
-      .json({ message: "Please Provide all the Credentials", result: false });
+    res.status(400).json({ error: "Please Provide all the Credentials", success: false });
     return;
   }
-  //return an array if the credentials are proper [accesstoken,refreshtoken], else returns an array boolean value false and error message
-  const result = await loginController(email, password);
-  if (result[0] == false) {
-    res.status(401).json({ message: result[1], result: false });
+  const result = await loginController({ email: email, password: password });
+  if (!result.success) {
+    res.status(409).json({ error: result.error, success: false });
     return;
-  } else {
-    const user_id = result[1];
-    const [accessToken, refreshToken] = jwtTokenGenerator(user_id, email);
-    res.cookie("token",refreshToken,{httpOnly:true})
-    res.status(201).json({ token: accessToken, result: true });
   }
-  
+  const tokens = jwtTokenGenerator({ user_id: result.user_id, email: email });
+  res.cookie("jwt", tokens.refreshToken, { httpOnly: true })
+  res.status(201).json({ jwt: tokens.accessToken, success: true });
   return;
 });
 
 authRouter.post("/signin", async (req, res) => {
   const { username, password, email } = req.body;
   if (!email | !username | !password) {
-    res
-      .status(400)
-      .json({ message: "Please Provide all the Credentials", result: false });
+    res.status(400).json({ error: "Please Provide all the Credentials", success: false });
     return;
   }
-  //return an array if the credentials are proper [accesstoken,refreshtoken], else returns an array boolean value false and error message
-  const result = await signinController(username, email, password);
-  if (result[0] == false) {
-    res.status(401).json({ message: result[1], result: false });
+
+  const result = await signinController({ username: username, email: email, password: password });
+  if (!result.success) {
+    res.status(409).json({ error: result.error, success: false });
     return;
   }
-  const [accessToken, refreshToken] = jwtTokenGenerator(result[1], email);
-  res.cookie("token",refreshToken,{httpOnly:true})
-  res.status(201).json({ token: accessToken, result: true });
+  const tokens = jwtTokenGenerator({ user_id: result.user_id, email: email });
+  res.cookie("jwt", tokens.refreshToken, { httpOnly: true })
+  res.status(201).json({ jwt: tokens.accessToken, success: true });
   return;
 });
 
 //refresh jwt token 
 // app.post('/refresh', (req, res) => {
 //     if (req.cookies?.jwt) {
-
-//         // Destructuring refreshToken from cookie
 //         const refreshToken = req.cookies.jwt;
 
 //         // Verifying refresh token

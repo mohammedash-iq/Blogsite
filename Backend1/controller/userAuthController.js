@@ -3,57 +3,48 @@ import bcrypt from "bcrypt";
 
 const saltRounds = 10;
 
-// return an array with a boolean value and reason for the error else return array with refresh token and access token
-async function loginController(email, password) {
+async function loginController({ email, password }) {
   try {
-    //check if the user exists
-    const [row, fields] = await dbPool.promise().query({
-      sql: "SELECT email FROM Users WHERE email= ?",
-      values: [email],
-    });
-    if (row.length === 0) {
-      return [false, "User doesn't exist"];
-    }
-
-    // Retrieve the hashed password from the database
-    const passrow = await dbPool.promise().query({
+    const [row] = await dbPool.promise().query({
       sql: "SELECT user_id, password_hash FROM Users WHERE email= ?",
       values: [email],
     });
-    // Compare the provided password with the hashed password from the database
-    const result = await bcrypt.compare(password, passrow[0][0].password_hash);
-
-    if (result) {
-      return [true, passrow[0][0].user_id];
+    if (row.length === 0) {
+      return { success: false, error: "User doesn't Exist!" };
     }
-    return [false, "Incorrect Password"];
+    // Compare the provided password with the hashed password from the database
+    const passcheck = await bcrypt.compare(password, row[0].password_hash);
+
+    if (!passcheck) {
+      return { success: false, error: "Incorrect Password!" }
+    }
+    return { success: true, user_id: row[0].user_id };
   } catch (err) {
     console.log(err);
-    return [false, "Internal Server error"];
+    return { success: false, error: "Internal Server Error!" };
   }
 }
 
 //return an array with a boolean value and reason for the error else return array with refresh token and access token
-async function signinController(username, email, password) {
+async function signinController({ username, email, password }) {
   try {
-    // Check for existing user by email or username
     const [row] = await dbPool.promise().query({
       sql: "SELECT email FROM Users WHERE email=?",
       values: [email],
     });
     if (row.length > 0) {
-      return [false, "User already exists"];
+      return { success: false, error: "User already Exists!" };
     }
-    // Insert new user into the database
     const hashedPassword = await bcrypt.hash(password, saltRounds);
-    const updaterow = await dbPool.promise().query({
+
+    const [updateRow] = await dbPool.promise().query({
       sql: "INSERT INTO Users (email, username, password_hash) VALUES (?,?,?);",
       values: [email, username, hashedPassword],
     });
-    return [true, updaterow[0].user_id];
+    return { success: true, user_id: updateRow.insertId };
   } catch (err) {
     console.log(err);
-    return [false, "Internal Server Error"];
+    return { success: false, error: "Internal Server Error" };
   }
 }
 
