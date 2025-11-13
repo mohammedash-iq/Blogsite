@@ -1,6 +1,6 @@
 import express from "express";
 import { loginController, signinController } from "../controller/userAuthController.js";
-import { checkJwtToken, jwtTokenGenerator } from "../controller/jwtController.js";
+import { jwtTokenGenerator } from "../controller/jwtController.js";
 
 const authRouter = express.Router();
 
@@ -12,7 +12,7 @@ authRouter.post("/login", async (req, res) => {
   }
   const result = await loginController({ email: email, password: password });
   if (!result.success) {
-    res.status(409).json({ error: result.error, success: false });
+    res.status(409).json({ error: result.message, success: false });
     return;
   }
   const tokens = jwtTokenGenerator({ user_id: result.user_id, email: email });
@@ -39,33 +39,23 @@ authRouter.post("/signin", async (req, res) => {
   return;
 });
 
-//refresh jwt token 
-// app.post('/refresh', (req, res) => {
-//     if (req.cookies?.jwt) {
-//         const refreshToken = req.cookies.jwt;
 
-//         // Verifying refresh token
-//         jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET,
-//             (err, decoded) => {
-//                 if (err) {
-
-//                     // Wrong Refesh Token
-//                     return res.status(406).json({ message: 'Unauthorized' });
-//                 }
-//                 else {
-//                     // Correct token we send a new access token
-//                     const accessToken = jwt.sign({
-//                         username: userCredentials.username,
-//                         email: userCredentials.email
-//                     }, process.env.ACCESS_TOKEN_SECRET, {
-//                         expiresIn: '10m'
-//                     });
-//                     return res.json({ accessToken });
-//                 }
-//             })
-//     } else {
-//         return res.status(406).json({ message: 'Unauthorized' });
-//     }
-// })
+app.post('/refresh', (req, res) => {
+  if (req.cookies?.jwt) {
+    const refreshToken = req.cookies.jwt;
+    jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET,
+      (err, decoded) => {
+        if (err) {
+          return res.status(406).json({ error: 'Unauthorized User!' });
+        }
+        else {
+          const accessToken = jwt.sign({ email: decoded.email, user_id: decoded.user_id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '10m' });
+          return res.status(201).json({ success: true, jwt: accessToken });
+        }
+      })
+  } else {
+    return res.status(406).json({ success: false, error: 'Unauthorized User!' });
+  }
+})
 
 export default authRouter;

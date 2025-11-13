@@ -9,7 +9,6 @@ function jwtTokenGenerator({ user_id, email }) {
 }
 
 function checkJwtToken(token) {
-  // This should probably verify against the ACCESS_TOKEN_SECRET and return the decoded payload
   const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 }
 
