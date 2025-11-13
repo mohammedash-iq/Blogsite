@@ -1,4 +1,5 @@
 import express from "express";
+import jwt from "jsonwebtoken"
 import { loginController, signinController } from "../controller/userAuthController.js";
 import { jwtTokenGenerator } from "../controller/jwtController.js";
 
@@ -40,21 +41,21 @@ authRouter.post("/signin", async (req, res) => {
 });
 
 
-app.post('/refresh', (req, res) => {
+authRouter.post('/refresh', (req, res) => {
   if (req.cookies?.jwt) {
     const refreshToken = req.cookies.jwt;
     jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET,
       (err, decoded) => {
         if (err) {
-          return res.status(406).json({ error: 'Unauthorized User!' });
+          return res.status(403).json({ error: 'Forbidden', success: false });
         }
         else {
           const accessToken = jwt.sign({ email: decoded.email, user_id: decoded.user_id }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '10m' });
-          return res.status(201).json({ success: true, jwt: accessToken });
+          return res.status(200).json({ success: true, jwt: accessToken });
         }
       })
   } else {
-    return res.status(406).json({ success: false, error: 'Unauthorized User!' });
+    return res.status(401).json({ success: false, error: 'Unauthorized' });
   }
 })
 
