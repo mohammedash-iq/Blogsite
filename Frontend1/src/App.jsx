@@ -1,21 +1,20 @@
 import Navbar from "./components/Navbar"
-import RegisterPage from "./pages/RegisterPage"
+import RegisterPage from "./screens/RegisterPage"
 import Blogs from "./screens/Blogs"
 import CreateBlog from "./screens/CreateBlog"
-import MyBlogs from "./screens/MyBlogs"
-import { Routes,Route } from "react-router-dom"
+import { Routes, Route } from "react-router-dom"
+import Dashboard from "./screens/dashboard"
 function App() {
-  return(
-    <>
-    <Navbar></Navbar>
-    <Routes>
-      <Route path="/" element={<Blogs></Blogs>}></Route>
-      <Route path="/createblog" element={<CreateBlog></CreateBlog>}></Route>
-      <Route path="/myblogs" element={<MyBlogs></MyBlogs>}></Route>
-      <Route path="/register" element={<RegisterPage/>}></Route>
-    </Routes>
-    
-    </>
+  return (
+    <div >
+      <Navbar></Navbar>
+      <Routes>
+        <Route path="/" element={<Blogs></Blogs>}></Route>
+        <Route path="/dashboard" element={<Dashboard></Dashboard>}></Route>
+        <Route path="/create" element={<CreateBlog />}></Route>
+        <Route path="/register" element={<RegisterPage />}></Route>
+      </Routes>
+    </div>
   )
 }
 
