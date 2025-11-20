@@ -1,4 +1,4 @@
-import MyBlogs from "./MyBlogs";
+import MyBlogs from "../components/MyBlogs";
 function Dashboard() {
     return (
         <>

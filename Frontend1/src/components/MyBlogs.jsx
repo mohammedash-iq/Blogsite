@@ -14,16 +14,16 @@ function MyBlogs() {
     console.log(e.target.value);
   }
   return (
-    <div className="py-24 sm:py-32" >
+    <div className="py-10" >
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:mx-0">
           <h2 className="text-4xl font-semibold tracking-tight" >My Blogs</h2>
-          <Link to="/create" className="mt-6 inline-block py-2 px-4 text-sm font-medium rounded-full" ><button>Create a new blog</button></Link>
+          <Link to="/create" className="mt-6 inline-block py-2 px-4 text-sm font-medium rounded-full bg-amber-300 border-1" ><button>Create a new blog</button></Link>
         </div>
         <div className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3" >
           {myBlogs.map((blog) => (
-            <article key={blog.blog_id} className="flex max-w-xl flex-col items-start justify-between p-4 rounded-lg">
-              <img className="overflow-hidden" src={image} alt={blog.title + "image"} />
+            <article key={blog.blog_id} className="flex max-w-xl flex-col items-start justify-between p-4 rounded-lg bg-amber-200 border-1">
+              <img className="w-full border-1 rounded-lg" src={image} alt={blog.title + "image"} />
               <div className="flex items-center gap-x-4 text-xs">
                 <p>
                   {blog.created_date}
