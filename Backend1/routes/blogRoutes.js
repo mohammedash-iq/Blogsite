@@ -5,11 +5,11 @@ const blogRoutes = express();
 
 blogRoutes.get("/all", async (req, res) => {
   const result = await getAllBlogs();
-  if (!result) {
-    res.status(500).json({ message: "Internal server Error", result: false });
+  if (!result.success) {
+    res.status(500).json({ error: result.error, success: false });
     return;
   }
-  res.status(201).json({ message: result, result: true });
+  res.status(201).json({ content: result.content, success: true });
   return;
 });
 

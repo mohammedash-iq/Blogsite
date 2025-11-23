@@ -1,6 +1,5 @@
 import dbPool from "../database/db.js";
 import bcrypt from "bcrypt";
-
 const saltRounds = 10;
 
 async function loginController({ email, password }) {

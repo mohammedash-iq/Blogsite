@@ -3,12 +3,11 @@ import dbPool from "../database/db.js";
 async function getAllBlogs() {
   try {
     const [row] = await dbPool.promise().query("SELECT * FROM Blogs");
-    console.log(row);
-    return row;
+    return { content: row, success: true };
   } catch (err) {
     console.log("Error fetching blogs", err);
-    return false;
+    return { error: err, success: false };
   }
 }
 
-export { getAllBlogs};
+export { getAllBlogs };

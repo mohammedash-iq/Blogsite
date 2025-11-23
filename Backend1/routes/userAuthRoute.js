@@ -13,7 +13,7 @@ authRouter.post("/login", async (req, res) => {
   }
   const result = await loginController({ email: email, password: password });
   if (!result.success) {
-    res.status(409).json({ error: result.message, success: false });
+    res.status(409).json({ error: result.error, success: false });
     return;
   }
   const tokens = jwtTokenGenerator({ user_id: result.user_id, email: email });
