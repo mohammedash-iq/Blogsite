@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import image from "../assets/image.jpg"
 import { useEffect, useState } from "react";
-import { getApiService } from "../services/userApiService";
+import { getApiService, deleteApiService } from "../services/userApiService";
 
 function MyBlogs() {
   const navigate = useNavigate()
@@ -19,9 +19,10 @@ function MyBlogs() {
     getData()
   }, [])
 
-  function handleDeleteBlog(e) {
-    //give a confromation screen and delete the blog from the database and the local state
+  async function handleDeleteBlog(e) {
     console.log(e.target.value);
+    const res = await deleteApiService({ endpoint: `/api/user/blog/delete/${e.target.value}` })
+    alert(res.message)
   }
   function handleEditBlog(e) {
     //give a conformation screen and go to edit blog page with the blog details
@@ -35,7 +36,7 @@ function MyBlogs() {
           <Link to="/create" className="mt-6 inline-block py-2 px-4 text-sm font-medium rounded-full bg-amber-300 border-1" ><button>Create a new blog</button></Link>
         </div>
         <div className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3" >
-          {!myBlogs[0] ? <h4>No blogs created</h4> : myBlogs.map((blog) => (
+          {myBlogs.map((blog) => (
             <article key={blog.blog_id} className="flex max-w-xl flex-col items-start justify-between p-4 rounded-lg bg-amber-200 border">
               <img className="w-full border rounded-lg" src={image} alt={blog.title + "image"} />
               <div className="flex items-center gap-x-4 text-xs">
