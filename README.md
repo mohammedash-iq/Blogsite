@@ -20,6 +20,11 @@ A full-stack blogging platform built with Node.js, Express, and MySQL. This proj
 *   **bcrypt**: For hashing user passwords.
 *   **ES Modules**: Uses modern JavaScript `import`/`export` syntax.
 
+### Frontend
+*   **React**: A JavaScript library for building user interfaces.
+*   **Vite**: Next-generation frontend tooling for a fast development experience.
+*   **(Add other libraries here)**: For example, `axios` for API requests, `react-router-dom` for routing, etc.
+
 ## Getting Started
 
 Follow these instructions to get a copy of the project up and running on your local machine.
@@ -66,6 +71,16 @@ Follow these instructions to get a copy of the project up and running on your lo
     npm start
     ```
     The server will start on `http://localhost:5000` (or the port you have configured).
+
+5.  **Set up and run the frontend:**
+    ```sh
+    # Open a new terminal
+    cd ../Frontend1
+    npm install
+    npm run dev
+    ```
+    The frontend development server will start on `http://localhost:5173` (or another port specified by Vite).
+
 
 ## API Endpoints
 

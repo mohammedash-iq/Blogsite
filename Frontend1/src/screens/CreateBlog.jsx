@@ -90,7 +90,7 @@ function CreateBlog() {
 
             <button
               type="submit"
-              className="w-full flex justify-center items-center py-3 px-4 rounded-lg text-base font-medium bg-amber-200 border-1"
+              className="w-full flex justify-center items-center py-3 px-4 rounded-lg text-base font-medium bg-amber-200 border"
             >
               Publish Blog Post
             </button>

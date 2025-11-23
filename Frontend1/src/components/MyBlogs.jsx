@@ -9,11 +9,6 @@ function MyBlogs() {
   useEffect(() => {
     const getData = async () => {
       const res = await getApiService({ endpoint: "/api/user/blog/all" })
-      if (!res.success) {
-        navigate("/login")
-        alert("Please login. Session timedout")
-        return;
-      }
       setMyBlogs(res.content)
     }
     getData()
@@ -25,7 +20,7 @@ function MyBlogs() {
     alert(res.message)
   }
   function handleEditBlog(e) {
-    //give a conformation screen and go to edit blog page with the blog details
+    
     console.log(e.target.value);
   }
   return (
@@ -33,7 +28,7 @@ function MyBlogs() {
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto max-w-2xl lg:mx-0">
           <h2 className="text-4xl font-semibold tracking-tight" >My Blogs</h2>
-          <Link to="/create" className="mt-6 inline-block py-2 px-4 text-sm font-medium rounded-full bg-amber-300 border-1" ><button>Create a new blog</button></Link>
+          <Link to="/create" className="mt-6 inline-block py-2 px-4 text-sm font-medium rounded-full bg-amber-300 border" ><button>Create a new blog</button></Link>
         </div>
         <div className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3" >
           {myBlogs.map((blog) => (
