@@ -1,10 +1,24 @@
-import { userBlogStore } from "../store/MyblogsStore";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import image from "../assets/image.jpg"
+import { useEffect, useState } from "react";
+import { getApiService } from "../services/userApiService";
 
 function MyBlogs() {
+  const navigate = useNavigate()
+  const [myBlogs, setMyBlogs] = useState([])
+  useEffect(() => {
+    const getData = async () => {
+      const res = await getApiService({ endpoint: "/api/user/blog/all" })
+      if (!res.success) {
+        navigate("/login")
+        alert("Please login. Session timedout")
+        return;
+      }
+      setMyBlogs(res.content)
+    }
+    getData()
+  }, [])
 
-  const myBlogs = userBlogStore((state) => state.userBlogs)
   function handleDeleteBlog(e) {
     //give a confromation screen and delete the blog from the database and the local state
     console.log(e.target.value);
@@ -21,9 +35,9 @@ function MyBlogs() {
           <Link to="/create" className="mt-6 inline-block py-2 px-4 text-sm font-medium rounded-full bg-amber-300 border-1" ><button>Create a new blog</button></Link>
         </div>
         <div className="mx-auto mt-10 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 border-t pt-10 sm:mt-16 sm:pt-16 lg:mx-0 lg:max-w-none lg:grid-cols-3" >
-          {myBlogs.map((blog) => (
-            <article key={blog.blog_id} className="flex max-w-xl flex-col items-start justify-between p-4 rounded-lg bg-amber-200 border-1">
-              <img className="w-full border-1 rounded-lg" src={image} alt={blog.title + "image"} />
+          {!myBlogs[0] ? <h4>No blogs created</h4> : myBlogs.map((blog) => (
+            <article key={blog.blog_id} className="flex max-w-xl flex-col items-start justify-between p-4 rounded-lg bg-amber-200 border">
+              <img className="w-full border rounded-lg" src={image} alt={blog.title + "image"} />
               <div className="flex items-center gap-x-4 text-xs">
                 <p>
                   {blog.created_date}
@@ -38,7 +52,8 @@ function MyBlogs() {
                   </a>
                 </h3>
               </div>
-
+              <button value={blog.blog_id} onClick={handleDeleteBlog} className="bg-red-400 rounded p-2">Delete</button>
+              <button value={blog.blog_id} onClick={handleEditBlog} className="bg-blue-400 rounded p-2">Edit</button>
             </article>
           ))}
         </div>

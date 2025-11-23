@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { loginService, signInService } from "../services/registerService";
 import useToken from "../store/authStore"
+import { useNavigate } from "react-router-dom";
 
 function RegisterPage() {
+  const navigate=useNavigate()
   const [registerState, setRegisterState] = useState("signin");
   const [inputState, setInputState] = useState({ username: "", email: "", password: "" });
   const setToken = useToken((state) => state.setToken)
@@ -11,21 +13,25 @@ function RegisterPage() {
     e.preventDefault();
     if (registerState === "login") {
       const res = await loginService({ email: inputState.email, password: inputState.password });
-      if (!res.result) {
-        alert(res.message);
+      if (!res.success) {
+        alert(res.error);
         return
       }
       alert("Logged in successfully")
       setToken(res.token)
+      localStorage.setItem("jwt",JSON.stringify(res.jwt))
+      navigate("/dashboard")
     }
     else {
       const res = await signInService({ username: inputState.username, email: inputState.email, password: inputState.password });
-      if (!res.result) {
-        alert(res.message);
+      if (!res.success) {
+        alert(res.error);
         return
       }
       alert("Logged in Successfully")
       setToken(res.token)
+      localStorage.setItem("jwt",JSON.stringify(res.jwt))
+      navigate("/dashboard")
     }
     e.preventDefault();
   }

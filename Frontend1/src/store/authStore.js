@@ -1,9 +1,11 @@
 import { create } from "zustand";
 
+
+const localtoken = localStorage.getItem("jwt")
+
 const useToken = create((set) => ({
-  token: "",
-  setToken: (accesstoken) => set(() => ({ token: accesstoken })),
-  setToken: () => set(() => ({ token: "" }))
+  token: localtoken ? localtoken : "",
+  setToken: (accesstoken) => set(() => ({ token: accesstoken }))
 }));
 
 export default useToken;

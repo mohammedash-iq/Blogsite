@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import DashboardNavbar from "../components/DashboardNavbar"
 import { Navigate } from "react-router-dom";
 function CreateBlog() {
   const [inputState, setInputState] = useState({
@@ -17,6 +18,8 @@ function CreateBlog() {
     event.preventDefault();
   }
   return (
+    <>
+    <DashboardNavbar></DashboardNavbar>
     <div>
       <div className="max-w-4xl mx-auto my-10 p-8 rounded-lg">
         {/* Title Section */}
@@ -92,6 +95,7 @@ function CreateBlog() {
         </form>
       </div>
     </div>
+    </>
   );
 }
 
