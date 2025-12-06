@@ -24,7 +24,6 @@ async function loginController({ email, password }) {
   }
 }
 
-//return an array with a boolean value and reason for the error else return array with refresh token and access token
 async function signinController({ username, email, password }) {
   try {
     const [row] = await dbPool.promise().query({

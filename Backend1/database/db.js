@@ -21,7 +21,7 @@ dbPool.query(
   }
 );
 
-dbPool.query("CREATE TABLE IF NOT EXISTS Blogs (blog_id INT AUTO_INCREMENT PRIMARY KEY, user_id INT,title VARCHAR(200) NOT NULL,content TEXT NOT NULL,created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ,FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE)",(err)=>{
+dbPool.query("CREATE TABLE IF NOT EXISTS Blogs (blog_id INT AUTO_INCREMENT PRIMARY KEY, user_id INT,title VARCHAR(200) NOT NULL,description TEXt NOT NULL,category varchar(100) NOT NULL,image_url varchar(250),Likes INT DEFAULT 0,Views INT DEFAULT 0, content TEXT NOT NULL,created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP ,FOREIGN KEY (user_id) REFERENCES Users(user_id) ON DELETE CASCADE)",(err)=>{
   if(err){
     console.log("error connecting or creating blogs database table"+ err)
   }
