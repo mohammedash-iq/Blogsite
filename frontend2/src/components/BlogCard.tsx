@@ -4,7 +4,7 @@ import image from "../image.jpg"
 function BlogCard({ blog: blog }) {
   const navigate = useNavigate()
   function handleReadmoreBtn(e) {
-    const id:string = e.target.id
+    const id:number = e.target.id
     navigate(`/read/${id}`)
   }
   return (
@@ -12,7 +12,7 @@ function BlogCard({ blog: blog }) {
       <img src={image} alt={`${blog.title} image`} />
       <h4>{blog.title}</h4>
       <p>{blog.description}</p>
-      <p>{String(blog.created_at).substring(0,10)}</p>
+      <p>{String(blog.created_at).substring(0, 10)}</p>
       <div>{blog.category}</div>
       <p>Likes<span>{blog.likes}</span>Views {blog.views}</p>
       <button onClick={handleReadmoreBtn} id={blog.blog_id}>Readmore..</button>

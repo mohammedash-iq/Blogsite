@@ -13,9 +13,7 @@ app.use(express.json())
 app.use(cors())
 app.use(cookieParser())
 
-app.get("/", (req, res) => {
-    res.status(200).send("you are in the backend")
-})
+app.get("/", (req, res) => { res.status(200).send("you are in the backend") })
 
 app.use("/user", authRouter)
 
@@ -24,7 +22,7 @@ app.use("/api/user/blog", userBlogRoutes)
 app.use("/api/blogs", blogRoutes)
 
 app.use((error, req, res, next) => {
-    console.log("error")
+    console.log(error)
     const errormessage = error.message || "An unexpected Server Error Occured!"
     res.status(500).json({ error: errormessage, success: false })
 })
