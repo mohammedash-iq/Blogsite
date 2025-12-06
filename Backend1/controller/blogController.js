@@ -10,7 +10,17 @@ async function getAllBlogs() {
   }
 }
 
-async function getBlog(id) {
+async function getCategoryBlogs({ category }) {
+  try {
+    const [row] = await dbPool.promise().query("SELECT blog_id,title,category,description,created_at,likes,views,user_id FROM Blogs WHERE category=? ORDER BY created_at DESC", [category]);
+    return { content: row, success: true };
+  } catch (err) {
+    console.log("Error fetching blogs", err);
+    return { error: err, success: false };
+  }
+}
+
+async function getBlog({ id }) {
   try {
     const [row] = await dbPool.promise().query("SELECT * FROM Blogs WHERE blog_id =?", [id])
     return { content: row, success: true }
@@ -21,4 +31,4 @@ async function getBlog(id) {
   }
 
 }
-export { getAllBlogs, getBlog };
+export { getAllBlogs, getBlog, getCategoryBlogs };

@@ -1,5 +1,5 @@
 import express from "express";
-import { getAllBlogs, getBlog } from "../controller/blogController.js";
+import { getAllBlogs, getBlog, getCategoryBlogs } from "../controller/blogController.js";
 
 const blogRoutes = express();
 
@@ -14,10 +14,20 @@ blogRoutes.get("/all", async (req, res) => {
   return;
 });
 
+blogRoutes.post("/category/:type", async (req, res) => {
+  const category = req.params.type
+  const result = await getCategoryBlogs({ category: category })
+  if (!result.success) {
+    res.status(500).json({ error: result.error, success: false })
+    return
+  }
+  res.status(201).json({ content: result.content, success: true })
+})
+
 // enpoint for getting a specific blog from the database
 blogRoutes.get("/:id", async (req, res) => {
   const id = req.params.id
-  const result = await getBlog(id)
+  const result = await getBlog({ id: id })
   if (!result.success) {
     res.status(500).json({ error: result.error, success: false })
     return

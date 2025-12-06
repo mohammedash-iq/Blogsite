@@ -1,10 +1,10 @@
 import { useNavigate } from "react-router-dom"
 import image from "../image.jpg"
 
-function BlogCard({ blog: blog }) {
+function BlogCard({ blog }) {
   const navigate = useNavigate()
   function handleReadmoreBtn(e) {
-    const id:number = e.target.id
+    const id: number = e.target.id
     navigate(`/read/${id}`)
   }
   return (
